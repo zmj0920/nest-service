@@ -1,10 +1,11 @@
 import { Logger } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
+import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 import { usePlugs } from './plugs';
 
 async function bootstrap() {
@@ -15,6 +16,9 @@ async function bootstrap() {
 
   // 添加插件
   usePlugs(app);
+
+  // 全局过滤器
+  app.useGlobalInterceptors(new TransformInterceptor(new Reflector()));
 
   // 设置前缀
   // app.setGlobalPrefix('api');

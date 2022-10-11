@@ -1,15 +1,9 @@
-import { ApiHideProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
-import {
-  Column,
-  Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from './base.entity';
 @Entity()
 export class Menu extends BaseEntity {
-  /* 菜单ID */
   @PrimaryGeneratedColumn({
     name: 'menu_id',
     comment: '菜单ID',
@@ -19,16 +13,14 @@ export class Menu extends BaseEntity {
   @IsNumber()
   menuId: number;
 
-  /* 菜单名称 */
   @Column({
-    name: 'menu_name',
+    name: 'name',
     comment: '菜单名称',
     length: 50,
   })
   @IsString()
-  menuName: string;
+  name: string;
 
-  /* 显示顺序 */
   @Column({
     name: 'order_num',
     comment: '显示顺序',
@@ -36,7 +28,6 @@ export class Menu extends BaseEntity {
   @IsNumber()
   orderNum: number;
 
-  /* 路由地址 */
   @Column({
     name: 'path',
     comment: '路由地址',
@@ -47,7 +38,6 @@ export class Menu extends BaseEntity {
   @IsString()
   path: string;
 
-  /* 组件路径 */
   @Column({
     name: 'component',
     comment: '组件路径',
@@ -58,7 +48,6 @@ export class Menu extends BaseEntity {
   @IsString()
   component?: string;
 
-  /* 路由参数 */
   @Column({
     name: 'query',
     comment: '路由参数',
@@ -69,7 +58,6 @@ export class Menu extends BaseEntity {
   @IsString()
   query?: string;
 
-  /* 是否为外链 */
   @Column({
     name: 'is_frame',
     comment: '是否为外链（0是 1否）',
@@ -81,7 +69,6 @@ export class Menu extends BaseEntity {
   @IsNumber()
   isFrame: number;
 
-  /* 是否缓存 */
   @Column({
     name: 'is_cache',
     comment: '是否缓存（0缓存 1不缓存）',
@@ -93,7 +80,6 @@ export class Menu extends BaseEntity {
   @IsNumber()
   isCache?: number;
 
-  /* '菜单类型 */
   @Column({
     name: 'menu_type',
     comment: '菜单类型（M目录 C菜单 F按钮）',
@@ -104,7 +90,6 @@ export class Menu extends BaseEntity {
   @IsString()
   menuType: string;
 
-  /* 菜单状态(0显示 1隐藏) */
   @Column({
     name: 'visible',
     comment: '菜单状态（0显示 1隐藏）',
@@ -116,7 +101,6 @@ export class Menu extends BaseEntity {
   @IsString()
   visible?: string;
 
-  /* 菜单状态（0正常 1停用） */
   @Column({
     name: 'status',
     comment: '菜单状态（0正常 1停用）',
@@ -128,18 +112,16 @@ export class Menu extends BaseEntity {
   @IsString()
   status?: string;
 
-  /* 权限标识 */
   @Column({
-    name: 'perms',
+    name: 'acl',
     comment: '权限标识',
     length: 100,
     default: null,
   })
   @IsOptional()
   @IsString()
-  perms?: string;
+  acl?: string;
 
-  /* 菜单图标 */
   @Column({
     name: 'icon',
     comment: '菜单图标',
@@ -151,18 +133,6 @@ export class Menu extends BaseEntity {
   @IsString()
   icon?: string;
 
-  // @ApiHideProperty()
-  // @TreeChildren()
-  // children: Menu[];
-
-  // @ApiHideProperty()
-  // @TreeParent()
-  // parent: Menu;
-
-  @Column({ name: 'parent_id', nullable: true })
+  @Column({ name: 'parent_id', comment: '父级菜单id', nullable: true })
   parentId: number;
-
-  // @ApiHideProperty()
-  // @ManyToMany(() => Role, (role) => role.menus)
-  // roles: Role[];
 }

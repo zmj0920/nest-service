@@ -4,28 +4,19 @@ import { IsNumber, IsOptional, IsString } from 'class-validator';
 import {
   Column,
   Entity,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { BaseEntity } from './base.entity';
-import { Dept } from './dept.entity';
-import { Post } from './post.entity';
-import { Role } from './role.entity';
 
 @Entity()
 export class User extends BaseEntity {
-  /* 用户Id */
   @PrimaryGeneratedColumn({
     name: 'user_id',
     comment: '用户ID',
   })
-  @Type()
   @IsNumber()
   userId: number;
 
-  /* 用户账号 */
   @Column({
     name: 'user_name',
     comment: '用户账号',
@@ -34,27 +25,14 @@ export class User extends BaseEntity {
   @IsString()
   userName: string;
 
-  /* 用户昵称 */
   @Column({
-    name: 'nick_name',
+    name: 'name',
     comment: '用户昵称',
     length: 30,
   })
   @IsString()
-  nickName: string;
+  name: string;
 
-  /* 用户类型 */
-  @Column({
-    name: 'user_type',
-    comment: '用户类型（00系统用户）',
-    length: 2,
-    default: '00',
-  })
-  @IsOptional()
-  @IsString()
-  userType?: string;
-
-  /* 用户邮箱 */
   @Column({
     comment: '用户邮箱',
     length: 50,
@@ -64,15 +42,15 @@ export class User extends BaseEntity {
   @IsString()
   email?: string;
 
-  /* 手机号码 */
   @Column({
     comment: '手机号码',
+    name:'phone_number',
     length: 11,
     default: null,
   })
   @IsOptional()
   @IsString()
-  phonenumber?: string;
+  phoneNumber?: string;
 
   @Column({
     comment: '用户性别（0男 1女 2未知）',
@@ -84,7 +62,6 @@ export class User extends BaseEntity {
   @IsString()
   sex: string;
 
-  /* 头像地址 */
   @Column({
     comment: '头像地址',
     length: 100,
@@ -94,7 +71,6 @@ export class User extends BaseEntity {
   @IsString()
   avatar?: string;
 
-  /* 密码 */
   @Column({
     comment: '密码',
     length: 100,
@@ -113,7 +89,6 @@ export class User extends BaseEntity {
   })
   salt: string;
 
-  /* 帐号状态 */
   @Column({
     comment: '帐号状态（0正常 1停用）',
     type: 'char',
@@ -124,7 +99,6 @@ export class User extends BaseEntity {
   @IsString()
   status: string;
 
-  /* 最后登录IP */
   @Column({
     name: 'login_ip',
     comment: '最后登录IP',
@@ -135,7 +109,6 @@ export class User extends BaseEntity {
   @IsString()
   loginIp?: string;
 
-  /* 最后登录时间 */
   @Column({
     name: 'login_date',
     comment: '最后登录时间',
@@ -145,20 +118,7 @@ export class User extends BaseEntity {
   @IsString()
   loginDate?: Date;
 
-  // @ApiHideProperty()
-  // @ManyToOne(() => Dept, (dept) => dept.users)
-  // dept: Dept;
-
   @Column({ name: 'dept_id', comment: '部门id' })
+  @IsNumber()
   deptId: number;
-
-  // @ApiHideProperty()
-  // @ManyToMany(() => Post, (post) => post.users)
-  // @JoinTable()
-  // posts: Post[];
-
-  // @ApiHideProperty()
-  // @ManyToMany(() => Role, (role) => role.users)
-  // @JoinTable()
-  // roles: Role[];
 }

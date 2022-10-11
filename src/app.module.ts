@@ -14,6 +14,13 @@ import ConfigModule from 'src/config';
 import { HttpExceptionFilter } from './common/exceptions/http.exception.filter';
 import { LogInterceptor } from './common/interceptors/log.interceptor';
 import { DatabaseModule } from './database.module';
+import { DeptModule } from './modules/dept/dept.module';
+import { DictTypeModule } from './modules/dict-type/dict-type.module';
+import { DictModule } from './modules/dict/dict.module';
+import { LoginLogModule } from './modules/login-log/login-log.module';
+import { OperLogModule } from './modules/oper-log/oper-log.module';
+import { PostModule } from './modules/post/post.module';
+import { RoleModule } from './modules/role/role.module';
 import { UserModule } from './modules/user/user.module';
 // 模块加载
 
@@ -34,7 +41,6 @@ export const ProviderModules = [
     provide: APP_FILTER,
     useClass: HttpExceptionFilter,
   },
-
   // {
   //     provide: APP_GUARD,
   //     useClass: RolesGuard,
@@ -55,6 +61,13 @@ export const ProviderModules = [
       maxRedirects: 5,
     }),
     UserModule,
+    RoleModule,
+    PostModule,
+    OperLogModule,
+    LoginLogModule,
+    DictModule,
+    DictTypeModule,
+    DeptModule
   ],
   controllers: [],
   providers: [...ProviderModules],

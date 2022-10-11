@@ -6,7 +6,6 @@ import { BaseEntity } from './base.entity';
   name: 'config',
 })
 export class Config extends BaseEntity {
-  /* 参数主键 */
   @PrimaryGeneratedColumn({
     name: 'config_id',
     comment: '参数主键',
@@ -14,7 +13,6 @@ export class Config extends BaseEntity {
   @IsNumber()
   configId: number;
 
-  /* 参数名称 */
   @Column({
     name: 'config_name',
     length: 100,
@@ -24,7 +22,6 @@ export class Config extends BaseEntity {
   @IsString()
   configName: string;
 
-  /* 参数键名 */
   @Column({
     name: 'config_key',
     length: 100,
@@ -34,7 +31,6 @@ export class Config extends BaseEntity {
   @IsString()
   configKey: string;
 
-  /* 参数键值 */
   @Column({
     name: 'config_value',
     length: 500,
@@ -44,7 +40,6 @@ export class Config extends BaseEntity {
   @IsString()
   configValue: string;
 
-  /* 系统内置（Y是 N否） */
   @Column({
     name: 'config_type',
     type: 'char',

@@ -1,17 +1,20 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({
   name: 'oper_log',
 })
 export class OperLog {
-  /* 日志主键 */
   @PrimaryGeneratedColumn({
     name: 'oper_id',
     comment: '日志主键',
   })
   operId: number;
 
-  /* 模块标题 */
   @Column({
     name: 'title',
     comment: '模块标题',
@@ -20,17 +23,15 @@ export class OperLog {
   })
   title: string;
 
-  /* '业务类型 */
   @Column({
-    name: 'business_type',
+    name: 'type',
     comment: '业务类型',
     default: '0',
     type: 'char',
     length: 1,
   })
-  businessType: string;
+  type: string;
 
-  /* 方法名称 */
   @Column({
     name: 'method',
     comment: '方法名称',
@@ -39,16 +40,14 @@ export class OperLog {
   })
   method: string;
 
-  /* 请求方式 */
   @Column({
-    name: 'request_method',
-    comment: '请求方式',
+    name: 'request_type',
+    comment: '请求类型',
     length: 10,
     default: '',
   })
-  requestMethod: string;
+  requestType: string;
 
-  /* 操作类别（0其它 1后台用户 2手机端用户） */
   @Column({
     name: 'operator_type',
     comment: '操作类别（0其它 1后台用户 2手机端用户）',
@@ -58,16 +57,22 @@ export class OperLog {
   })
   operatorType: string;
 
-  /* 操作人员 */
   @Column({
-    name: 'oper_name',
+    name: 'user_name',
     comment: '操作人员',
     length: 50,
     default: '',
   })
-  operName: string;
+  userName: string;
 
-  /* 部门名称 */
+  @Column({
+    name: 'user_id',
+    comment: '操作人员ID',
+    length: 50,
+    default: '',
+  })
+  userId: string;
+
   @Column({
     name: 'dept_name',
     comment: '部门名称',
@@ -76,52 +81,46 @@ export class OperLog {
   })
   deptName: string;
 
-  /* 请求URL */
   @Column({
-    name: 'oper_url',
+    name: 'url',
     comment: '请求URL',
     length: 255,
     default: '',
   })
-  operUrl: string;
+  url: string;
 
-  /* 主机地址 */
   @Column({
-    name: 'oper_ip',
+    name: 'ip',
     comment: '主机地址',
     length: 128,
     default: '',
   })
-  operIp: string;
+  ip: string;
 
-  /* 操作地点 */
   @Column({
-    name: 'oper_location',
+    name: 'location',
     comment: '操作地点',
     length: 255,
     default: '',
   })
-  operLocation: string;
+  location: string;
 
-  /* 请求参数 */
   @Column({
-    name: 'oper_param',
+    name: 'param',
     comment: '请求参数',
     length: 2000,
     default: '',
   })
-  operParam: string;
+  param: string;
 
-  /* 返回参数 */
   @Column({
-    name: 'json_result',
+    name: 'result',
     comment: '返回参数',
     length: 2000,
     default: '',
   })
-  jsonResult: string;
+  result: string;
 
-  /* 操作状态（0正常 1异常） */
   @Column({
     name: 'status',
     comment: '操作状态（0正常 1异常）',
@@ -130,20 +129,17 @@ export class OperLog {
   })
   status: number;
 
-  /* 返回参数 */
   @Column({
-    name: 'errorMsg',
+    name: 'error_msg',
     comment: '返回参数',
     length: 2000,
     default: '',
   })
   errorMsg: string;
 
-  /* 操作时间 */
-  @Column({
+  @CreateDateColumn({
     name: 'oper_time',
     comment: '操作时间',
-    type: 'datetime',
   })
-  operTime: string;
+  operTime: Date | string;
 }

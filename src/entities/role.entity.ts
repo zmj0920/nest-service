@@ -45,46 +45,12 @@ export class Role extends BaseEntity {
 
   /* 显示顺序 */
   @Column({
-    name: 'role_sort',
+    name: 'order_num',
     comment: '显示顺序',
   })
   @IsNumber()
-  roleSort: number;
+  orderNum: number;
 
-  /* 数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限  5：仅本人数据权限） */
-  @Column({
-    name: 'data_scope',
-    comment:
-      '数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限 5：仅本人数据权限）',
-    length: 1,
-    type: 'char',
-    default: '1',
-  })
-  @IsOptional()
-  @IsString()
-  dataScope?: string;
-
-  /* 菜单树选择项是否关联显示 */
-  @Column({
-    name: 'menu_check_strictly',
-    comment: '菜单树选择项是否关联显示',
-    type: 'boolean',
-    default: true,
-  })
-  @IsBoolean()
-  menuCheckStrictly: boolean;
-
-  /* 菜单树选择项是否关联显示 */
-  @Column({
-    name: 'dept_check_strictly',
-    comment: '菜单树选择项是否关联显示',
-    type: 'boolean',
-    default: true,
-  })
-  @IsBoolean()
-  deptCheckStrictly: boolean;
-
-  /* 角色状态（0正常 1停用） */
   @Column({
     name: 'status',
     comment: '角色状态（0正常 1停用）',
@@ -94,27 +60,4 @@ export class Role extends BaseEntity {
   @IsString()
   status: string;
 
-  @Column({
-    name: 'del_flag',
-    comment: '删除标志（0代表存在 2代表删除）',
-    length: 1,
-    type: 'char',
-    default: '0',
-  })
-  @ApiHideProperty()
-  delFlag: string;
-
-  // @ApiHideProperty()
-  // @ManyToMany(() => Dept, (dept) => dept.roles)
-  // @JoinTable()
-  // depts: Dept[];
-
-  // @ApiHideProperty()
-  // @ManyToMany(() => Menu, (menu) => menu.roles)
-  // @JoinTable()
-  // menus: Menu[];
-
-  // @ApiHideProperty()
-  // @ManyToMany(() => User, (user) => user.roles)
-  // users: User[];
 }

@@ -1,9 +1,7 @@
-import { ApiHideProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsNumber, IsString } from 'class-validator';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from './base.entity';
-import { DictData } from './dict-data.entity';
 
 @Entity({
   name: 'dict_type',
@@ -48,8 +46,4 @@ export class DictType extends BaseEntity {
   })
   @IsString()
   status: string;
-
-  // @OneToMany(() => DictData, (dictData) => dictData.dictType)
-  // @ApiHideProperty()
-  // dictDatas: DictData[];
 }

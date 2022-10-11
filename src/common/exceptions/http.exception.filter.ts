@@ -17,7 +17,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
   constructor() {}
 
   catch(exception: unknown, host: ArgumentsHost) {
-    console.log(111);
+    // console.log(111);
 
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<FastifyReply>();
@@ -30,7 +30,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     // set json response
     response.header('Content-Type', 'application/json; charset=utf-8');
     // prod env will not return internal error message
-    console.log(status);
+    // console.log(status);
 
     const code =
       exception instanceof BusinessException
