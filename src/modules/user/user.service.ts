@@ -1,13 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
 import { camelCase, isEmpty } from 'lodash';
-import SysUser from 'src/entities/sys-user.entity';
+import { User } from 'src/entities/user.entity';
 import { EntityManager, In, Not, Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(SysUser) private userRepository: Repository<SysUser>,
+    @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
   /**
