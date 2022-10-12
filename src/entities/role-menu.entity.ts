@@ -3,7 +3,7 @@ import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
 import { BaseEntity } from './base.entity';
 
 @Entity({ name: 'role_menu' })
-export default class SysRoleMenu extends BaseEntity {
+export default class RoleMenu extends BaseEntity {
   @PrimaryGeneratedColumn({ name: 'id', comment: '角色菜单Id' })
   @IsNumber()
   id: number;

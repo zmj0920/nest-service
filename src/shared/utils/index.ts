@@ -49,8 +49,28 @@ export const generateUUID = (): string => {
  */
 export const generateRandomValue = (
   length: number,
-  placeholder = '1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'
+  placeholder = '1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM',
 ): string => {
   const customNanoid = customAlphabet(placeholder, length);
   return customNanoid();
+};
+
+// export const tree = (items, id = 'id', value = null, parent = 'parentId') => {
+//   return items
+//     .filter((item) => item[parent] === value)
+//     .map((item) => ({ ...item, children: tree(items, id, item[id]) }));
+// };
+
+export const tree = (
+  items,
+  options: { id?: string; value?: string | null | number; parent?: string },
+) => {
+  const { id = 'id', value = null, parent = 'parentId' } = options;
+
+  return items
+    .filter((item) => item[parent] === value)
+    .map((item: any) => ({
+      ...item,
+      children: tree(items, { id, value: item[id] }),
+    }));
 };

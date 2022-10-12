@@ -1,26 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { CreateDictTypeDto } from './dto/create-dict-type.dto';
-import { UpdateDictTypeDto } from './dto/update-dict-type.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { isEmpty } from 'lodash';
+import { BusinessException } from 'src/common/exceptions/business.exception.ts';
+import { DictType } from 'src/entities/dict-type.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class DictTypeService {
-  create(createDictTypeDto: CreateDictTypeDto) {
-    return 'This action adds a new dictType';
+  constructor(
+    @InjectRepository(DictType)
+    private readonly dictTypeRepository: Repository<DictType>,
+  ) {}
+
+  /* 新增或者编辑字典类型 */
+  async addOrUpdateType(dictType: DictType) {
+    const type = await this.findDictType(dictType.dictType);
+    if (type) throw new BusinessException(20001);
+    await this.dictTypeRepository.save(dictType);
   }
 
-  findAll() {
-    return `This action returns all dictType`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} dictType`;
-  }
-
-  update(id: number, updateDictTypeDto: UpdateDictTypeDto) {
-    return `This action updates a #${id} dictType`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} dictType`;
+  /* 通过字典类型查询 */
+  async findDictType(dictType: string) {
+    return await this.dictTypeRepository.findOneBy({ dictType });
   }
 }

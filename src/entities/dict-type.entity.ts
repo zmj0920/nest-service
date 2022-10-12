@@ -9,12 +9,12 @@ import { BaseEntity } from './base.entity';
 export class DictType extends BaseEntity {
   /* 字典编码 */
   @PrimaryGeneratedColumn({
-    name: 'dict_id',
+    name: 'dict_type_id',
     comment: '字典类型ID',
   })
   @Type()
   @IsNumber()
-  dictId: number;
+  dictTypeId: number;
 
   /* 字典名称 */
   @Column({

@@ -15,25 +15,6 @@ export class UserService {
     @InjectRepository(User) private userRepository: Repository<User>,
     @InjectEntityManager() private entityManager: EntityManager,
   ) {}
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
-  }
-
-  findAll() {
-    return `This action returns all user`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
-  }
 
   /**
    * 根据用户名查找已经启用的用户
@@ -53,7 +34,6 @@ export class UserService {
     if (!isEmpty(exists)) {
       throw new BusinessException(10001);
     }
-    // 所有用户初始密码为123456
 
     await this.entityManager.transaction(async (manager) => {
       const salt = generateRandomValue(32);
@@ -89,4 +69,22 @@ export class UserService {
       await manager.insert(UserRole, insertRoles);
     });
   }
+
+    /* 通过用户名获取用户,排除停用和删除的,用于登录 */
+    async findOneByUsername(username: string) {
+      const user = await this.userRepository
+        .createQueryBuilder('user')
+        .select('user.userId')
+        .addSelect('user.userName')
+        .addSelect('user.password')
+        .addSelect('user.salt')
+        .addSelect('user.dept')
+        .leftJoinAndSelect('user.dept', 'dept')
+        .where({
+          userName: username,
+          status: '0',
+        })
+        .getOne();
+      return user;
+    }
 }
