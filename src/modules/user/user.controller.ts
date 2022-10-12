@@ -12,6 +12,7 @@ import { BusinessTypeEnum, Log } from 'src/common/decorators';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { BusinessException } from 'src/common/exceptions/business.exception.ts';
 
 @ApiTags('用户模块')
 @Controller('user')
@@ -24,7 +25,7 @@ export class UserController {
   @Get('list')
   @Log({
     title: '获取管理员资料',
-    businessType: BusinessTypeEnum.other,
+    type: BusinessTypeEnum.other,
   })
   async list(): Promise<any> {
     return await this.userService.findUserByUserName();

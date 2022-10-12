@@ -1,9 +1,21 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { OperLog } from 'src/entities/oper-log.entity';
+import { Repository } from 'typeorm';
 import { CreateOperLogDto } from './dto/create-oper-log.dto';
 import { UpdateOperLogDto } from './dto/update-oper-log.dto';
 
 @Injectable()
 export class OperLogService {
+  constructor(
+    @InjectRepository(OperLog)
+    private readonly operLogRepository: Repository<OperLog>,
+  ) {}
+  // 新增操作日志
+  async addOperLog(operLog: OperLog) {
+    return await this.operLogRepository.save(operLog);
+  }
+
   create(createOperLogDto: CreateOperLogDto) {
     return 'This action adds a new operLog';
   }

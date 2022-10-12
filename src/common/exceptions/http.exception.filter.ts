@@ -49,6 +49,27 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const result = new ResOp(code, null, message);
     response.status(status).send(result);
   }
+
+  /* 解析错误类型，获取状态码和返回值 */
+  errorResult(exception: unknown) {
+    const status =
+      exception instanceof HttpException
+        ? exception.getStatus()
+        : HttpStatus.INTERNAL_SERVER_ERROR;
+
+    const code =
+      exception instanceof BusinessException
+        ? (exception as BusinessException).getErrorCode()
+        : status;
+
+    let message =
+      exception instanceof HttpException ? exception.message : `${exception}`;
+    const result = new ResOp(code, null, message);
+    return {
+      status,
+      result: result,
+    };
+  }
 }
 export class ResOp {
   readonly data: any;

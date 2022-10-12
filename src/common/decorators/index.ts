@@ -42,7 +42,7 @@ export class LogOption {
   title: string;
 
   /* 操作功能 */
-  businessType?: BusinessTypeEnum = BusinessTypeEnum.other;
+  type?: BusinessTypeEnum = BusinessTypeEnum.other;
 
   /* 是否保存请求的参数 */
   isSaveRequestData?: boolean = true;
