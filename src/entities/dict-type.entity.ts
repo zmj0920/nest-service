@@ -40,10 +40,8 @@ export class DictType extends BaseEntity {
   /* 状态（0正常 1停用） */
   @Column({
     comment: '状态（0正常 1停用）',
-    type: 'char',
     default: 0,
-    length: 1,
   })
-  @IsString()
-  status: string;
+  @IsNumber()
+  status: number;
 }

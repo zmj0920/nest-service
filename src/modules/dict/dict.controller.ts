@@ -1,5 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DictService } from './dict.service';
 import { CreateDictDto } from './dto/create-dict.dto';
 import { UpdateDictDto } from './dto/update-dict.dto';
@@ -10,27 +18,24 @@ export class DictController {
   constructor(private readonly dictService: DictService) {}
 
   @Post()
-  create(@Body() createDictDto: CreateDictDto) {
-    return this.dictService.create(createDictDto);
+  create(@Body() createDictDto: CreateDictDto) {}
+
+  @Get('getDict/:dictType')
+  @ApiOperation({
+    summary: '根据字典类型获取字典数据',
+  })
+  async getDict(@Param('dictType') dictType: string) {
+    return await this.dictService.getDict(dictType);
   }
 
-  @Get()
-  findAll() {
-    return this.dictService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.dictService.findOne(+id);
+  @Get('list/:pageSize/:page')
+  list(@Param('pageSize') limit: number, @Param('page') page: number) {
+    return this.dictService.getDictList({ limit, page });
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDictDto: UpdateDictDto) {
-    return this.dictService.update(+id, updateDictDto);
-  }
+  update(@Param('id') id: string, @Body() updateDictDto: UpdateDictDto) {}
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.dictService.remove(+id);
-  }
+  remove(@Param('id') id: string) {}
 }

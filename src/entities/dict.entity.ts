@@ -17,12 +17,12 @@ export class Dict extends BaseEntity {
   dictId: number;
 
   @Column({
-    name: 'dict_sort',
+    name: 'order_num',
     comment: '字典排序',
     default: 0,
   })
   @IsNumber()
-  dictSort: number;
+  orderNum: number;
 
   @Column({
     name: 'name',
@@ -54,13 +54,11 @@ export class Dict extends BaseEntity {
   isDefault?: string;
 
   @Column({
-    length: '1',
-    type: 'char',
     default: '0',
     comment: '状态（0正常 1停用）',
   })
-  @IsString()
-  status: string;
+  @IsNumber()
+  status: number;
 
   @Column({
     name: 'dict_type_id',

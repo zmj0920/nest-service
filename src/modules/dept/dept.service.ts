@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Dept } from 'src/entities/dept.entity';
 import { Repository } from 'typeorm';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'class-validator';
 import { BusinessException } from 'src/common/exceptions/business.exception.ts';
 import { tree } from 'src/shared/utils';
 
@@ -13,25 +13,19 @@ export class DeptService {
   ) {}
 
   /**
-   * 根据ID查找部门信息
+   * 创建部门
    */
-  async findById(deptId: number) {
-    const dept = await this.deptRepository.findOneBy({ deptId });
-    let parentDept = null;
-    if (dept.parentId) {
-      parentDept = await this.deptRepository.findOne({
-        where: { deptId: dept.parentId },
-      });
+  async create(param: Dept) {
+    if (param.parentId) {
+      await this.findDept(param.parentId);
     }
-    return { dept, parentDept };
+    return await this.deptRepository.save(param);
   }
 
-  async findDept(deptId: number) {
-    const dept = await this.deptRepository.findOneBy({ deptId });
-    if (isEmpty(dept)) {
-      throw new BusinessException(10019);
-    }
-    return dept;
+  // 树结构部门信息
+  async treeDept() {
+    const depts = await this.list();
+    return tree(depts, { id: 'deptId' });
   }
 
   /**
@@ -42,23 +36,14 @@ export class DeptService {
   }
 
   /**
-   * 新增部门
-   */
-  async add(param: Dept) {
-    if (param.parentId) {
-      await this.findDept(param.parentId);
-    }
-    return await this.deptRepository.save(param);
-  }
-
-  /**
    * 更新部门信息
    */
-  async update(param: Dept) {
+  async update(deptId: number, param: Dept) {
     if (param.parentId) {
       await this.findDept(param.parentId);
     }
-    return await this.deptRepository.save(param);
+    const dept = await this.findDept(deptId);
+    return await this.deptRepository.save({ ...dept, ...param });
   }
 
   /**
@@ -69,8 +54,26 @@ export class DeptService {
     return await this.deptRepository.delete(deptId);
   }
 
-  async treeDept() {
-    const depts = await this.list();
-    return tree(depts, { id: 'deptId' });
+   /**
+   * 根据ID查找部门信息
+   */
+    async findById(deptId: number) {
+      const dept = await this.deptRepository.findOneBy({ deptId });
+      let parentDept = null;
+      if (dept.parentId) {
+        parentDept = await this.deptRepository.findOne({
+          where: { deptId: dept.parentId },
+        });
+      }
+      return { dept, parentDept };
+    }
+
+  // 根据部门id查询数据
+  async findDept(deptId: number) {
+    const dept = await this.deptRepository.findOneBy({ deptId });
+    if (isEmpty(dept)) {
+      throw new BusinessException(10019);
+    }
+    return dept;
   }
 }

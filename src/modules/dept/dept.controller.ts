@@ -7,7 +7,8 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Dept } from 'src/entities/dept.entity';
 import { DeptService } from './dept.service';
 import { CreateDeptDto } from './dto/create-dept.dto';
 import { UpdateDeptDto } from './dto/update-dept.dto';
@@ -17,20 +18,51 @@ import { UpdateDeptDto } from './dto/update-dept.dto';
 export class DeptController {
   constructor(private readonly deptService: DeptService) {}
 
-  @Post()
-  create(@Body() createDeptDto: CreateDeptDto) {}
+  @ApiOperation({
+    summary: '创建部门',
+  })
+  @Post('crate')
+  create(@Body() dto: Dept) {
+    return this.deptService.create(dto);
+  }
 
-  @Get()
-  findAll() {
+  @ApiOperation({
+    summary: '查询部门树结构',
+  })
+  @Get('tree')
+  tree() {
     return this.deptService.treeDept();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {}
+  @ApiOperation({
+    summary: '查询部门列表',
+  })
+  @Get('list')
+  list() {
+    return this.deptService.list();
+  }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDeptDto: UpdateDeptDto) {}
+  @ApiOperation({
+    summary: '修改部门信息',
+  })
+  @Patch('/:deptId')
+  upadte(@Param('deptId') deptId: number, @Body() param: Dept) {
+    return this.deptService.update(deptId, param);
+  }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {}
+  @ApiOperation({
+    summary: '删除部门信息',
+  })
+  @Delete(':deptId')
+  remove(@Param('deptId') deptId: number) {
+    return this.deptService.delete(deptId);
+  }
+
+  @ApiOperation({
+    summary: '根据部门id查询部门信息',
+  })
+  @Get(':deptId')
+  findOne(@Param('deptId') deptId: number) {
+    return this.deptService.findById(deptId);
+  }
 }

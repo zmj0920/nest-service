@@ -8,5 +8,6 @@ import { DictType } from 'src/entities/dict-type.entity';
   imports: [TypeOrmModule.forFeature([DictType])],
   controllers: [DictTypeController],
   providers: [DictTypeService],
+  exports: [DictTypeService],
 })
 export class DictTypeModule {}

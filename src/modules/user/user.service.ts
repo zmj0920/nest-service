@@ -1,13 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'class-validator';
 import { BusinessException } from 'src/common/exceptions/business.exception.ts';
 import UserRole from 'src/entities/user-role.entity';
 import { User } from 'src/entities/user.entity';
 import { generateRandomValue, md5 } from 'src/shared/utils';
 import { EntityManager, Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
