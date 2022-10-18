@@ -1,36 +1,42 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { LoginLogService } from './login-log.service';
-import { CreateLoginLogDto } from './dto/create-login-log.dto';
-import { UpdateLoginLogDto } from './dto/update-login-log.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { LoginLog } from 'src/entities/login-log.entity';
 
 @ApiTags('用户登录日志模块')
 @Controller('login-log')
 export class LoginLogController {
   constructor(private readonly loginLogService: LoginLogService) {}
 
+  @ApiOperation({
+    summary: '添加登录日志信息',
+  })
   @Post()
-  create(@Body() createLoginLogDto: CreateLoginLogDto) {
-    return this.loginLogService.create(createLoginLogDto);
+  create(@Body() dto: LoginLog) {
+    return this.loginLogService.create(dto);
   }
 
-  @Get()
-  findAll() {
-    return this.loginLogService.findAll();
+  @ApiOperation({
+    summary: '分页查询登录日志列表',
+  })
+  @Get('list/:pageSize/:page')
+  list(@Param('pageSize') limit: number, @Param('page') page: number) {
+    return this.loginLogService.getLoginLogList({ limit, page });
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.loginLogService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLoginLogDto: UpdateLoginLogDto) {
-    return this.loginLogService.update(+id, updateLoginLogDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.loginLogService.remove(+id);
+  @ApiOperation({
+    summary: '删除登录日志信息',
+  })
+  @Delete(':infoId')
+  remove(@Param('infoId') infoId: number) {
+    return this.loginLogService.remove(infoId);
   }
 }

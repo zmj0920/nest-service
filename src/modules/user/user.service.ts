@@ -6,12 +6,14 @@ import UserRole from 'src/entities/user-role.entity';
 import { User } from 'src/entities/user.entity';
 import { generateRandomValue, md5 } from 'src/shared/utils';
 import { EntityManager, Repository } from 'typeorm';
+import { DeptService } from '../dept/dept.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
     @InjectEntityManager() private entityManager: EntityManager,
+    private dept: DeptService,
   ) {}
 
   /**
@@ -24,7 +26,7 @@ export class UserService {
   /**
    * 增加系统用户，如果返回false则表示已存在该用户
    */
-  async add(param: any): Promise<void> {
+  async create(param: any): Promise<void> {
     // const insertData: any = { ...CreateUserDto };
     const exists = await this.userRepository.findOne({
       where: { userName: param.userName },
@@ -68,21 +70,77 @@ export class UserService {
     });
   }
 
-    /* 通过用户名获取用户,排除停用和删除的,用于登录 */
-    async findOneByUsername(username: string) {
-      const user = await this.userRepository
-        .createQueryBuilder('user')
-        .select('user.userId')
-        .addSelect('user.userName')
-        .addSelect('user.password')
-        .addSelect('user.salt')
-        .addSelect('user.dept')
-        .leftJoinAndSelect('user.dept', 'dept')
-        .where({
-          userName: username,
-          status: '0',
-        })
-        .getOne();
-      return user;
+  /* 通过用户名获取用户,排除停用和删除的,用于登录 */
+  async getUserInfo(username: string) {
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      // .leftJoinAndSelect('dept', 'dept', 'user.deptId = dept.deptId')
+      .select('user.userId')
+      .addSelect('user.userName')
+      .addSelect('user.name')
+      .addSelect('user.password')
+      .addSelect('user.salt')
+      .addSelect('user.deptId')
+      .where({
+        userName: username,
+        status: '0',
+      })
+      .getOne();
+
+    const dept = await this.dept.findDept(user.deptId);
+
+    return {
+      userId: user.userId,
+      name: user.name,
+      password: user.password,
+      salt: user.salt,
+      deptId: user.deptId,
+      deptName: dept.deptName,
+    };
+  }
+
+  //分页查询
+  async getUserList(params: { limit: number; page: number }) {
+    const { limit, page } = params;
+    const db = this.userRepository
+      .createQueryBuilder('user')
+      .offset((page - 1) * limit)
+      .limit(limit);
+    const [list, total] = await db.getManyAndCount();
+    return { list, page: { total, pageNum: page, pageSize: limit } };
+  }
+
+  //分页查询
+  async getDeptIdUserList(params: {
+    limit: number;
+    page: number;
+    deptId: number;
+  }) {
+    const { limit, page, deptId } = params;
+    const db = this.userRepository
+      .createQueryBuilder('user')
+      .where({
+        deptId,
+      })
+      .offset((page - 1) * limit)
+      .limit(limit);
+    const [list, total] = await db.getManyAndCount();
+    return { list, page: { total, pageNum: page, pageSize: limit } };
+  }
+
+  async findUserById(userId: number) {
+    return this.userRepository.findOne({ where: { userId } });
+  }
+
+  async update(userId: number, dto: User) {
+    const user = await this.findUserById(userId);
+    if (isEmpty(user)) {
+      throw new BusinessException(11004);
     }
+    return this.userRepository.save({ ...user, dto });
+  }
+
+  async remove(userId: number) {
+    return this.userRepository.delete(userId);
+  }
 }

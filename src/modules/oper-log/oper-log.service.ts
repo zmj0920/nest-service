@@ -2,8 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OperLog } from 'src/entities/oper-log.entity';
 import { Repository } from 'typeorm';
-import { CreateOperLogDto } from './dto/create-oper-log.dto';
-import { UpdateOperLogDto } from './dto/update-oper-log.dto';
 
 @Injectable()
 export class OperLogService {
@@ -16,23 +14,19 @@ export class OperLogService {
     return await this.operLogRepository.save(operLog);
   }
 
-  create(createOperLogDto: CreateOperLogDto) {
-    return 'This action adds a new operLog';
+  //分页查询操作日志
+  async getOperLogList(params: { limit: number; page: number }) {
+    const { limit, page } = params;
+    const db = this.operLogRepository
+      .createQueryBuilder('operLog')
+      .offset((page - 1) * limit)
+      .limit(limit);
+    const [list, total] = await db.getManyAndCount();
+    return { list, page: { total, pageNum: page, pageSize: limit } };
   }
 
-  findAll() {
-    return `This action returns all operLog`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} operLog`;
-  }
-
-  update(id: number, updateOperLogDto: UpdateOperLogDto) {
-    return `This action updates a #${id} operLog`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} operLog`;
+  // 删除操作日志
+  remove(infoId: number) {
+    this.operLogRepository.delete(infoId);
   }
 }

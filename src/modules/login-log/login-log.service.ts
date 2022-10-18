@@ -1,26 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { CreateLoginLogDto } from './dto/create-login-log.dto';
-import { UpdateLoginLogDto } from './dto/update-login-log.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { LoginLog } from 'src/entities/login-log.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class LoginLogService {
-  create(createLoginLogDto: CreateLoginLogDto) {
-    return 'This action adds a new loginLog';
+  constructor(
+    @InjectRepository(LoginLog)
+    private loginLogRepository: Repository<LoginLog>,
+  ) {}
+
+  create(dto: LoginLog) {
+    this.loginLogRepository.save(dto);
   }
 
-  findAll() {
-    return `This action returns all loginLog`;
+  //分页查询登录日志
+  async getLoginLogList(params: { limit: number; page: number }) {
+    const { limit, page } = params;
+    const db = this.loginLogRepository
+      .createQueryBuilder('loginLog')
+      .offset((page - 1) * limit)
+      .limit(limit);
+    const [list, total] = await db.getManyAndCount();
+    return { list, page: { total, pageNum: page, pageSize: limit } };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} loginLog`;
-  }
-
-  update(id: number, updateLoginLogDto: UpdateLoginLogDto) {
-    return `This action updates a #${id} loginLog`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} loginLog`;
+  // 删除登录日志
+  remove(infoId: number) {
+    this.loginLogRepository.delete(infoId);
   }
 }

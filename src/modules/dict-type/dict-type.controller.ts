@@ -1,31 +1,58 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { DictType } from 'src/entities/dict-type.entity';
 import { DictTypeService } from './dict-type.service';
-import { CreateDictTypeDto } from './dto/create-dict-type.dto';
-import { UpdateDictTypeDto } from './dto/update-dict-type.dto';
 
 @ApiTags('字典类别模块')
 @Controller('dict-type')
 export class DictTypeController {
   constructor(private readonly dictTypeService: DictTypeService) {}
 
+  @ApiOperation({
+    summary: '创建字典类型',
+  })
   @Post()
-  create(@Body() createDictTypeDto: CreateDictTypeDto) {
+  async create(@Body() dto: DictType) {
+    return await this.dictTypeService.create(dto);
   }
 
-  @Get()
-  findAll() {
+  @ApiOperation({
+    summary: '根据id查询字典类型',
+  })
+  @Get(':dictTypeId')
+  async findOne(@Param('dictTypeId') dictTypeId: number) {
+    return await this.dictTypeService.getDictTypeById(dictTypeId);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @ApiOperation({
+    summary: '更新字典类型',
+  })
+  @Patch(':dictTypeId')
+  async update(@Param('dictTypeId') dictTypeId: number, @Body() dto: DictType) {
+    return await this.dictTypeService.update(dictTypeId, dto);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDictTypeDto: UpdateDictTypeDto) {
+  @ApiOperation({
+    summary: '删除字典类型',
+  })
+  @Delete(':dictTypeId')
+  async remove(@Param('dictTypeId') dictTypeId: number) {
+    return await this.dictTypeService.remove(dictTypeId);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @ApiOperation({
+    summary: '分页查询字典类型列表',
+  })
+  @Get('list/:pageSize/:page')
+  list(@Param('pageSize') limit: number, @Param('page') page: number) {
+    return this.dictTypeService.getDictTypeList({ limit, page });
   }
 }

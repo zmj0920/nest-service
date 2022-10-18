@@ -13,10 +13,10 @@ export class DictTypeService {
   ) {}
 
   /* 新增字典类型 */
-  async addOrUpdateType(dictType: DictType) {
-    const type = await this.findDictType(dictType.dictType);
+  async create(dto: DictType) {
+    const type = await this.findDictType(dto.dictType);
     if (type) throw new BusinessException(20001);
-    return await this.dictTypeRepository.save(dictType);
+    return await this.dictTypeRepository.save(dto);
   }
 
   /* 通过字典类型查询 */
@@ -26,13 +26,42 @@ export class DictTypeService {
     });
   }
 
+  //更新类型
+  async update(dictTypeId: number, dto: DictType) {
+    const dictType = await this.findDictTypeById(dictTypeId);
+    return this.dictTypeRepository.save({ ...dictType, ...dto });
+  }
+
+  // 根据id查询
+  async getDictTypeById(dictTypeId: number) {
+    return await this.dictTypeRepository.findOne({
+      where: { dictTypeId },
+    });
+  }
+
   /* 通过字典id数组删除 */
-  async deleteDictType(dictTypeId: number[]) {
+  async remove(dictTypeId: number) {
     await this.dictTypeRepository.delete(dictTypeId);
   }
 
-  //更新类型
-  updateDictType(dictType: DictType) {
-    return this.dictTypeRepository.save(dictType);
+  // 根据字典类型id 查询字典类型数据是否存在
+  async findDictTypeById(dictTypeId: number) {
+    const dictType = this.getDictTypeById(dictTypeId);
+    if (isEmpty(dictType)) {
+      throw new BusinessException(20003);
+    }
+
+    return dictType;
+  }
+
+  //分页查询登录日志
+  async getDictTypeList(params: { limit: number; page: number }) {
+    const { limit, page } = params;
+    const db = this.dictTypeRepository
+      .createQueryBuilder('dictType')
+      .offset((page - 1) * limit)
+      .limit(limit);
+    const [list, total] = await db.getManyAndCount();
+    return { list, page: { total, pageNum: page, pageSize: limit } };
   }
 }

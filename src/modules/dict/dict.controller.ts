@@ -8,17 +8,21 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Dict } from 'src/entities/dict.entity';
 import { DictService } from './dict.service';
-import { CreateDictDto } from './dto/create-dict.dto';
-import { UpdateDictDto } from './dto/update-dict.dto';
 
 @ApiTags('字典模块')
 @Controller('dict')
 export class DictController {
   constructor(private readonly dictService: DictService) {}
 
+  @ApiOperation({
+    summary: '添加字典数据',
+  })
   @Post()
-  create(@Body() createDictDto: CreateDictDto) {}
+  create(@Body() dto: Dict) {
+    this.dictService.create(dto);
+  }
 
   @Get('getDict/:dictType')
   @ApiOperation({
@@ -28,14 +32,27 @@ export class DictController {
     return await this.dictService.getDict(dictType);
   }
 
+  @ApiOperation({
+    summary: '分页查询字典列表',
+  })
   @Get('list/:pageSize/:page')
   list(@Param('pageSize') limit: number, @Param('page') page: number) {
     return this.dictService.getDictList({ limit, page });
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDictDto: UpdateDictDto) {}
+  @ApiOperation({
+    summary: '更新字典',
+  })
+  @Patch(':dictId')
+  update(@Param('dictId') dictId: number, @Body() dto: Dict) {
+    this.dictService.updateDict(dictId, dto);
+  }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {}
+  @ApiOperation({
+    summary: '删除字典',
+  })
+  @Delete(':dictId')
+  remove(@Param('dictId') dictId: number) {
+    return this.dictService.remove(dictId);
+  }
 }

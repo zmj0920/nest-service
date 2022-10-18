@@ -1,7 +1,7 @@
 /**
  * 统一错误代码定义
  */
-export const ErrorCodeMap = {
+export const ErrorCode = {
   // 10000 - 99999 业务操作错误
   10000: '参数校验异常',
   10001: '系统用户已存在',
@@ -32,11 +32,12 @@ export const ErrorCodeMap = {
   11001: '登录无效或无权限访问',
   11002: '登录身份已过期',
   11003: '无权限，请联系管理员申请权限',
+  11004: '用户信息不存在',
 
   // 字典相关
   20001: '该字典类型已存在，请更换',
   20002: '字典数据不存在',
-  20003: '已超出支持的最大处理数量'
+  20003: '字典类型不存在，请添加类型'
 };
 
-export type ErrorCodeMapType = keyof typeof ErrorCodeMap;
+export type ErrorCodeType = keyof typeof ErrorCode;

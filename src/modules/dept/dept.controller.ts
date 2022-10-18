@@ -10,8 +10,6 @@ import {
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Dept } from 'src/entities/dept.entity';
 import { DeptService } from './dept.service';
-import { CreateDeptDto } from './dto/create-dept.dto';
-import { UpdateDeptDto } from './dto/update-dept.dto';
 
 @ApiTags('部门模块')
 @Controller('dept')

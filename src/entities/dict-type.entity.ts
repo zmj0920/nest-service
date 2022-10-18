@@ -12,7 +12,6 @@ export class DictType extends BaseEntity {
     name: 'dict_type_id',
     comment: '字典类型ID',
   })
-  @Type()
   @IsNumber()
   dictTypeId: number;
 

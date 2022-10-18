@@ -13,6 +13,13 @@ export class DictService {
     private readonly dictRepository: Repository<Dict>,
     private dictTypeService: DictTypeService,
   ) {}
+
+  // 添加字典数据
+  async create(dict: Dict) {
+    this.dictTypeService.findDictTypeById(dict.dictTypeId);
+    return this.dictRepository.save(dict);
+  }
+
   /* 通过 dictType 获取 字典数据(排除停用的)*/
   async getDict(type: string) {
     const dictType = await this.dictTypeService.findDictType(type);
@@ -37,11 +44,7 @@ export class DictService {
     return { list, page: { total, pageNum: page, pageSize: limit } };
   }
 
-  // 添加字典数据
-  async addDict(dict: Dict) {
-    this.dictRepository.save(dict);
-  }
-
+  // 根据字典id查询字典数据
   async findById(dictId: number) {
     const dict = this.dictRepository.findOne({ where: { dictId } });
     if (isEmpty(dict)) {
@@ -51,9 +54,17 @@ export class DictService {
   }
 
   // 更新字典数据
-  async updateDict(dto: Dict) {
-    const dict = await this.findById(dto.dictId);
+  async updateDict(dictId: number, dto: Dict) {
+    const dict = await this.findById(dictId);
+    if (dto.dictTypeId) {
+      this.dictTypeService.findDictTypeById(dto.dictTypeId);
+    }
 
     this.dictRepository.save({ ...dict, ...dto });
+  }
+
+  async remove(dictId: number) {
+    await this.findById(dictId);
+    return this.dictRepository.delete(dictId);
   }
 }
