@@ -54,19 +54,19 @@ export class DeptService {
     return await this.deptRepository.delete(deptId);
   }
 
-   /**
+  /**
    * 根据ID查找部门信息
    */
-    async findById(deptId: number) {
-      const dept = await this.deptRepository.findOneBy({ deptId });
-      let parentDept = null;
-      if (dept.parentId) {
-        parentDept = await this.deptRepository.findOne({
-          where: { deptId: dept.parentId },
-        });
-      }
-      return { dept, parentDept };
+  async findById(deptId: number) {
+    const dept = await this.deptRepository.findOneBy({ deptId });
+    let parentDept = null;
+    if (dept.parentId) {
+      parentDept = await this.deptRepository.findOne({
+        where: { deptId: dept.parentId },
+      });
     }
+    return { dept, parentDept };
+  }
 
   // 根据部门id查询数据
   async findDept(deptId: number) {

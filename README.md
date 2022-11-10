@@ -48,3 +48,7 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+
+云硬盘备份列表，导出按钮样式有误
+云硬盘备份列表，按'是否存在增量备份'字段排序有误

@@ -8,8 +8,9 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { BusinessTypeEnum, Log } from 'src/common/decorators';
+import { Log } from 'src/common/decorators';
 import { User } from 'src/entities/user.entity';
+import { BusinessTypeEnum } from 'src/types';
 import { UserService } from './user.service';
 
 @ApiTags('用户模块')

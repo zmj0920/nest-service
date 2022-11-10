@@ -92,6 +92,7 @@ export class UserService {
     return {
       userId: user.userId,
       name: user.name,
+      userName: user.userName,
       password: user.password,
       salt: user.salt,
       deptId: user.deptId,

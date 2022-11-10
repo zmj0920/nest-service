@@ -22,10 +22,13 @@
   },
   "dependencies": {
     "@fastify/static": "^6.5.0",
+    "@nestjs-modules/ioredis": "^1.0.1",
     "@nestjs/axios": "^0.1.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
+    "@nestjs/jwt": "^9.0.0",
+    "@nestjs/passport": "^9.0.0",
     "@nestjs/platform-fastify": "^9.1.4",
     "@nestjs/swagger": "^6.1.2",
     "@nestjs/typeorm": "^9.0.1",
@@ -37,10 +40,14 @@
     "ioredis": "^5.2.3",
     "mysql2": "^2.3.3",
     "nanoid": "^3.3.4",
+    "passport": "^0.6.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "typeorm": "^0.3.10"
+    "typeorm": "^0.3.10",
+    "ua-parser-js": "^1.0.32"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
