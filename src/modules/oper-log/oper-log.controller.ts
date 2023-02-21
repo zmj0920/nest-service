@@ -8,10 +8,11 @@ import {
   Delete,
 } from '@nestjs/common';
 import { OperLogService } from './oper-log.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { OperLog } from 'src/entities/oper-log.entity';
 
 @ApiTags('操作日志模块')
+@ApiBearerAuth()
 @Controller('oper-log')
 export class OperLogController {
   constructor(private readonly operLogService: OperLogService) {}

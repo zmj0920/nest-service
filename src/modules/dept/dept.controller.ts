@@ -7,11 +7,12 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Dept } from 'src/entities/dept.entity';
 import { DeptService } from './dept.service';
 
 @ApiTags('部门模块')
+@ApiBearerAuth()
 @Controller('dept')
 export class DeptController {
   constructor(private readonly deptService: DeptService) {}

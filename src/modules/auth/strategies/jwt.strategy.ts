@@ -9,7 +9,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly authService: AuthService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: jwtConstants.ignoreExpiration,
+      ignoreExpiration: false,
       secretOrKey: jwtConstants.secret,
       passReqToCallback: true, //设置回调的第一个参数是  request
     });
@@ -17,10 +17,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(request: Request, payload: Payload) {
     const { userId, pv } = payload;
-    const token = request.headers['token'];
-    console.log(token);
+    // const token = request.headers['authorization'];
+    
 
-    await this.authService.validateToken(userId, pv, token);
-    return { userId }; //返回值会被 守卫的  handleRequest方法 捕获
+    const token = (request.headers as any).authorization.slice(7);
+    console.log(token);
+    // await this.authService.validateToken(userId, pv, token);
+    return payload; //返回值会被 守卫的  handleRequest方法 捕获
   }
 }

@@ -4,7 +4,7 @@ import { Dept } from 'src/entities/dept.entity';
 import { Repository } from 'typeorm';
 import { isEmpty } from 'class-validator';
 import { BusinessException } from 'src/common/exceptions/business.exception.ts';
-import { tree } from 'src/shared/utils';
+import { tree } from 'src/common/utils';
 
 @Injectable()
 export class DeptService {

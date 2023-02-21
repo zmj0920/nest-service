@@ -7,16 +7,18 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Log } from 'src/common/decorators';
 import { User } from 'src/entities/user.entity';
 import { BusinessTypeEnum } from 'src/types';
 import { UserService } from './user.service';
 
 @ApiTags('用户模块')
+@ApiBearerAuth()
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   // @ApiOperation({
   //   summary: '新增管理员',

@@ -1,5 +1,4 @@
 import { HttpException } from '@nestjs/common';
-// import { WsException } from '@nestjs/websockets';
 import { ErrorCode, ErrorCodeType } from './error-code';
 
 /**
@@ -21,15 +20,3 @@ export class BusinessException extends HttpException {
   }
 }
 
-// export class SocketException extends WsException {
-//   private errorCode: number;
-
-//   constructor(errorCode: number) {
-//     super(ErrorCode[errorCode]);
-//     this.errorCode = errorCode;
-//   }
-
-//   getErrorCode(): number {
-//     return this.errorCode;
-//   }
-// }

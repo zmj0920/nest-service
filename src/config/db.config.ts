@@ -5,7 +5,7 @@ export default registerAs('db', () => ({
   port: process.env.DATABASE_PORT || 3306,
   username: process.env.DATABASE_USER || 'root',
   password: process.env.DATABASE_PASS || '123456',
-  database: process.env.DATABASE_BASE || 'ng-admin',
+  database: process.env.DATABASE_BASE || 'nest-admin',
   // 重试连接数据库的次数（默认：10）
   retryAttempts: 10,
   // 两次重试连接的间隔(ms)（默认：3000）

@@ -5,7 +5,6 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { FastifyReply } from 'fastify';
 import { isDev } from 'src/config/env';
 import { BusinessException } from './business.exception.ts';
 
@@ -14,13 +13,12 @@ import { BusinessException } from './business.exception.ts';
  */
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
-  constructor() {}
 
   catch(exception: unknown, host: ArgumentsHost) {
     // console.log(111);
 
     const ctx = host.switchToHttp();
-    const response = ctx.getResponse<FastifyReply>();
+    const response = ctx.getResponse();
 
     // check api exection
     const status =
@@ -62,7 +60,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         ? (exception as BusinessException).getErrorCode()
         : status;
 
-    let message =
+    const message =
       exception instanceof HttpException ? exception.message : `${exception}`;
     const result = new ResOp(code, null, message);
     return {

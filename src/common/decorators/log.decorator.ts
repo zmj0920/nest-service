@@ -2,10 +2,6 @@ import { SetMetadata } from '@nestjs/common';
 import { BusinessTypeEnum } from 'src/types';
 import { LOG_KEY_METADATA } from '../contants';
 
-/*
-https://docs.nestjs.com/openapi/decorators#decorators
-*/
-
 export class LogOption {
   /* 操作模块 */
   title: string;

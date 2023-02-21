@@ -29,9 +29,11 @@ import { UserModule } from './modules/user/user.module';
 // 全局 性质
 export const ProviderModules = [
   {
-    // 全局管道 主要为了参数验证
     provide: APP_PIPE,
-    useClass: ValidationPipe,
+    useValue: new ValidationPipe({
+      whitelist: true, // 启用白名单，dto中没有声明的属性自动过滤
+      transform: true, // 自动类型转换
+    }),
   },
   /* 操作日志拦截器 。 注：拦截器中的 handle 从下往上执行（ReponseTransformInterceptor ----> OperationLogInterceptor），返回值值依次传递 */
   {
@@ -66,7 +68,6 @@ export const ProviderModules = [
       timeout: 5000,
       maxRedirects: 5,
     }),
-    AuthModule,
     UserModule,
     RoleModule,
     PostModule,
@@ -75,9 +76,10 @@ export const ProviderModules = [
     DictModule,
     DictTypeModule,
     DeptModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [...ProviderModules],
   exports: [],
 })
-export class AppModule {}
+export class AppModule { }

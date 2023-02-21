@@ -9,11 +9,12 @@ import {
   Put,
 } from '@nestjs/common';
 import { RoleService } from './role.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/entities/role.entity';
 import { BusinessException } from 'src/common/exceptions/business.exception.ts';
 
 @ApiTags('角色模块')
+@ApiBearerAuth()
 @Controller('role')
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}

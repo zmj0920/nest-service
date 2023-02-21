@@ -7,11 +7,12 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DictType } from 'src/entities/dict-type.entity';
 import { DictTypeService } from './dict-type.service';
 
 @ApiTags('字典类别模块')
+@ApiBearerAuth()
 @Controller('dict-type')
 export class DictTypeController {
   constructor(private readonly dictTypeService: DictTypeService) {}

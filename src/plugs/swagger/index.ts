@@ -6,18 +6,19 @@ export function useSwagger(app: INestApplication) {
     .setDescription('接口文档')
     .setVersion('1.0')
     .setBasePath('api')
+    .addBearerAuth()
     // JWT鉴权
-    .addSecurity('admin', {
-      description: '后台管理接口授权',
-      type: 'apiKey',
-      in: 'header',
-      name: 'token',
-    })
+    // .addSecurity('admin', {
+    //   description: '后台管理接口授权',
+    //   type: 'apiKey',
+    //   in: 'header',
+    //   name: 'token',
+    // })
     .build();
   const document = SwaggerModule.createDocument(app, config, {
     // ignoreGlobalPrefix: true
   });
-  let options = {
+  const options = {
     // customCss: '.swagger-ui .topbar { display: none }'
   };
   SwaggerModule.setup('api', app, document, options);

@@ -12,18 +12,18 @@ import { HttpService } from '@nestjs/axios';
 import * as iconv from 'iconv-lite';
 import { LOG_KEY_METADATA } from '../contants';
 import { LogOption } from '../decorators';
-import { getReqIP } from 'src/shared/utils';
 import { HttpExceptionFilter } from '../exceptions/http.exception.filter';
 import { OperLog } from 'src/entities/oper-log.entity';
-import { OperLogService } from 'src/modules/oper-log/oper-log.service';
+// import { OperLogService } from 'src/modules/oper-log/oper-log.service';
+import { getReqIP } from '../utils';
 
 @Injectable()
 export class LogInterceptor implements NestInterceptor {
   constructor(
     private readonly reflector: Reflector,
     private readonly httpService: HttpService,
-    private readonly operLog: OperLogService,
-  ) {}
+    // private readonly operLog: OperLogService,
+  ) { }
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       tap({
@@ -98,7 +98,8 @@ export class LogInterceptor implements NestInterceptor {
     if (logOption.isSaveResponseData) {
       operLog.result = JSON.stringify(data);
     }
-    return this.operLog.addOperLog(operLog);
+    return operLog;
+    // return this.operLog.addOperLog(operLog);
   }
 
   /* 通过ip获取地理位置 */

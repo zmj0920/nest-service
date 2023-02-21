@@ -3,15 +3,15 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
 } from '@nestjs/common';
 import { LoginLogService } from './login-log.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { LoginLog } from 'src/entities/login-log.entity';
 
 @ApiTags('用户登录日志模块')
+@ApiBearerAuth()
 @Controller('login-log')
 export class LoginLogController {
   constructor(private readonly loginLogService: LoginLogService) {}

@@ -1,7 +1,6 @@
 import { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
-import { FastifyReply } from 'fastify';
 import { map } from 'rxjs/operators';
 import { ResOp } from '../exceptions/http.exception.filter';
 import { TRANSFORM_KEEP_KEY_METADATA } from '../contants';
@@ -28,7 +27,7 @@ export class TransformInterceptor<T> implements NestInterceptor {
         if (keep) {
           return data;
         } else {
-          const response = context.switchToHttp().getResponse<FastifyReply>();
+          const response = context.switchToHttp().getResponse();
           response.header('Content-Type', 'application/json; charset=utf-8');
           return new ResOp(200, data);
         }

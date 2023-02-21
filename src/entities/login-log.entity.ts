@@ -1,9 +1,4 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class LoginLog {
@@ -70,10 +65,10 @@ export class LoginLog {
   })
   msg: string;
 
-  @CreateDateColumn({
+  @Column({
     name: 'login_time',
     comment: '访问时间',
     type: 'datetime',
   })
-  loginTime: Date | string;
+  loginTime: string;
 }
