@@ -19,6 +19,7 @@ import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import { DeptModule } from './modules/dept/dept.module';
 import { DictTypeModule } from './modules/dict-type/dict-type.module';
 import { DictModule } from './modules/dict/dict.module';
+import { EventsModule } from './modules/events/events.module';
 import { LoginLogModule } from './modules/login-log/login-log.module';
 import { OperLogModule } from './modules/oper-log/oper-log.module';
 import { PostModule } from './modules/post/post.module';
@@ -68,6 +69,7 @@ export const ProviderModules = [
       timeout: 5000,
       maxRedirects: 5,
     }),
+    EventsModule,
     UserModule,
     RoleModule,
     PostModule,
